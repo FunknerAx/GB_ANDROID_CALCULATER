@@ -1,18 +1,26 @@
-package kz.funkner.funknercalculater;
-
-import androidx.appcompat.app.AppCompatActivity;
+package kz.funkner.funknercalculater.ui;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+import kz.funkner.funknercalculater.R;
+import kz.funkner.funknercalculater.domain.CalculaterImpl;
+import kz.funkner.funknercalculater.domain.Operation;
+
+public class MainActivity extends AppCompatActivity implements CalculaterView {
+    TextView resultText;
+    private CalculaterPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        presenter = new CalculaterPresenter(this, new CalculaterImpl());
 
         final Button but1 = findViewById(R.id.number_one);
         final Button but2 = findViewById(R.id.number_two);
@@ -33,105 +41,92 @@ public class MainActivity extends AppCompatActivity {
         final Button butDivide = findViewById(R.id.number_divide);
         Button butResult = findViewById(R.id.result_button);
 
-        final TextView resultText = findViewById(R.id.result_text);
-
-        final StringBuilder upperText = new StringBuilder();
+        resultText = findViewById(R.id.result_text);
 
         but1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                upperText.append(but1.getText().toString());
-                resultText.setText(upperText);
+                presenter.addNumber(but1.getText().toString());
             }
         });
 
         but2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                upperText.append(but2.getText().toString());
-                resultText.setText(upperText);
+                presenter.addNumber(but2.getText().toString());
             }
         });
 
         but3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                upperText.append(but3.getText().toString());
-                resultText.setText(upperText);
+                presenter.addNumber(but3.getText().toString());
             }
         });
 
         but4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                upperText.append(but4.getText().toString());
-                resultText.setText(upperText);
+                presenter.addNumber(but4.getText().toString());
             }
         });
 
         but5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                upperText.append(but5.getText().toString());
-                resultText.setText(upperText);
+                presenter.addNumber(but5.getText().toString());
             }
         });
 
         but6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                upperText.append(but6.getText().toString());
-                resultText.setText(upperText);
+                presenter.addNumber(but6.getText().toString());
             }
         });
 
         but7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                upperText.append(but7.getText().toString());
-                resultText.setText(upperText);
+                presenter.addNumber(but7.getText().toString());
             }
         });
 
         but8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                upperText.append(but8.getText().toString());
-                resultText.setText(upperText);
+                presenter.addNumber(but8.getText().toString());
             }
         });
 
         but9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                upperText.append(but9.getText().toString());
-                resultText.setText(upperText);
+                presenter.addNumber(but9.getText().toString());
             }
         });
 
         but0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                upperText.append(but0.getText().toString());
-                resultText.setText(upperText);
+                presenter.addNumber(but0.getText().toString());
             }
         });
 
         butDot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                upperText.append(butDot.getText().toString());
-                resultText.setText(upperText);
+                presenter.addNumber(butDot.getText().toString());
 
             }
         });
 
+        //Операции
         butSum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                upperText.append(" ").append(butSum.getText().toString()).append(" ");
-                resultText.setText(upperText);
+                presenter.updateArrayValues();
+                presenter.addOperation(Operation.SUM);
 
             }
         });
@@ -139,8 +134,8 @@ public class MainActivity extends AppCompatActivity {
         butDivide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                upperText.append(" ").append(butDivide.getText().toString()).append(" ");
-                resultText.setText(upperText);
+                presenter.updateArrayValues();
+                presenter.addOperation(Operation.DIV);
 
             }
         });
@@ -148,8 +143,8 @@ public class MainActivity extends AppCompatActivity {
         butMultiply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                upperText.append(" ").append(butMultiply.getText().toString()).append(" ");
-                resultText.setText(upperText);
+                presenter.updateArrayValues();
+                presenter.addOperation(Operation.MUL);
 
             }
         });
@@ -157,8 +152,8 @@ public class MainActivity extends AppCompatActivity {
         butSubtract.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                upperText.append(" ").append(butSubtract.getText().toString()).append(" ");
-                resultText.setText(upperText);
+                presenter.updateArrayValues();
+                presenter.addOperation(Operation.SUB);
 
             }
         });
@@ -166,10 +161,29 @@ public class MainActivity extends AppCompatActivity {
         butResult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                presenter.getResult();
             }
         });
 
+        butClearAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.clearAll();
+            }
+        });
+
+        butClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.clearLastChar();
+            }
+        });
 
     }
+
+    @Override
+    public void showResult(String value) {
+        resultText.setText(value);
+    }
+
 }
